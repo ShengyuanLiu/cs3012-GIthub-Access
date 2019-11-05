@@ -1,7 +1,11 @@
 import requests
 import json
+import pygal
+from pygal.style import  LightColorizedStyle as LCS, LightStyle as LS
 from github import Github
 import getpass
+
+
 
 def start():
         access = False
@@ -28,6 +32,7 @@ def start():
 
 def getTheContributors(repo):
     repo_contributors = []
+    repo_contributions = []
     contributors = repo.get_contributors()
     print("Preparing to print the contributors and each of their contributions:")
     for contributor in contributors:
@@ -37,10 +42,10 @@ def getTheContributors(repo):
                 if contributionTime != "None":
                    print("Contributor:" + str(name)+"  Contribution:"+ str(contributionTime))
                    repo_contributors.append(contributor)
-                   repo_contributors.append(int(contributionTime))
+                   repo_contributions.append(contributionTime)
     # returns contributors in a list
 
-    return repo_contributors
+    return repo_contributors,repo_contributions
 
 
 
@@ -48,6 +53,23 @@ def getTheContributors(repo):
 
 
 repo=start()
-contributors = getTheContributors(repo)
-print(contributors)
+(contributors,contributions) = getTheContributors(repo)
+print("\nThe contributors who gives the most contribution is " +contributors[0].name+" and his/her contribution time is:"+contributions[0])
 
+
+my_style = LS('#333366', base_style=LCS)
+my_config = pygal.Config()
+my_config.x_label_rotation = 45
+my_config.show_legend = False
+my_config.title_font_size = 24
+my_config.label_font_size = 14
+my_config.major_label_font_size = 18
+my_config.truncate_label = 15
+my_config.show_y_guides = False
+my_config.width = 1000
+
+chart = pygal.Bar(my_config, style=my_style)
+chart.title = 'Most-Starred Python Project on Github'
+chart.x_labels = contributors.name
+chart.add('', contributions)
+chart.render_to_file('python_repos.svg')
