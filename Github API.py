@@ -21,11 +21,11 @@ def start():
         error = True
         while (error):
             try:
-                repo_to_use = input("Please put in the git repo you wish to interrogate: ")
+                repo_to_use = input("Please put in repo you wish to interrogate\nThe input construction should be (owner_name/repo_name):")
                 repo = g.get_repo(repo_to_use)
                 error = False
             except:
-                print("Incorrect repo please try again")
+                print("Incorrect repo (check whether if use wrong owner). Please try again")
         return repo
 
 
@@ -47,29 +47,13 @@ def getTheContributors(repo):
 
     return repo_contributors,repo_contributions
 
-
+# def getTheFollower():
+#
 
 
 
 
 repo=start()
 (contributors,contributions) = getTheContributors(repo)
-print("\nThe contributors who gives the most contribution is " +contributors[0].name+" and his/her contribution time is:"+contributions[0])
+print("\nThe contributors who gives the most contributions is " +contributors[0].name+" and his/her contribution time is:"+contributions[0])
 
-
-my_style = LS('#333366', base_style=LCS)
-my_config = pygal.Config()
-my_config.x_label_rotation = 45
-my_config.show_legend = False
-my_config.title_font_size = 24
-my_config.label_font_size = 14
-my_config.major_label_font_size = 18
-my_config.truncate_label = 15
-my_config.show_y_guides = False
-my_config.width = 1000
-
-chart = pygal.Bar(my_config, style=my_style)
-chart.title = 'Most-Starred Python Project on Github'
-chart.x_labels = contributors.name
-chart.add('', contributions)
-chart.render_to_file('python_repos.svg')
