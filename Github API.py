@@ -82,7 +82,7 @@ def getReceivedEvents(contributors):
         theIssue=0
         if push_event!=[]:
               push_event_str="".join(push_event)
-              print(push_event_str)
+              # print(push_event_str)
               pattern=re.compile(r'IssuesEvent')
               result=pattern.findall(push_event_str)
               theIssue=len(result)
@@ -125,7 +125,7 @@ repo=start()
 # print the greatest contributors and contributions
 print("\nThe contributors who gives the most contributions is " +contributors[0].name+" and his/her contribution time is:"+contributions[0])
 # repo_count = getTheContributorsRepo(contributors)
-received_count = getReceivedEvents(contributors)
+(received_count,issue_count) = getReceivedEvents(contributors)
 # starred_count=getStars(contributors)
 # to print each contributor's repository amount
 # count=0
@@ -140,5 +140,15 @@ received_count = getReceivedEvents(contributors)
 # count=0
 # while count<len(repo_count):
 #     result=int(starred_count[count])/int(repo_count[count])
-#     print("The result are "+str(result))
+#     print("The result are: "+str(result))
 #     count+=1
+
+#get the contributors' work quality
+# if result>0.2 means the contributor's work quality is not very good
+# if 0<result<0.05 means the contributor has a great code ability
+# if result=0 should check the user's event excalty
+# count=0
+# while count<len(received_count):
+#       result=int(received_count[count])/int(issue_count[count])
+#       print("The contributors' work quality result is: "+str(result))
+#       count+=1
