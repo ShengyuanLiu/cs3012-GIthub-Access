@@ -1,6 +1,7 @@
 import requests
 import json
 import pygal
+import re
 from pygal.style import  LightColorizedStyle as LCS, LightStyle as LS
 from github import Github
 import getpass
@@ -47,6 +48,8 @@ def getTheContributors(repo):
 
     return repo_contributors,repo_contributions
 
+
+
 def getTheContributorsRepo(contributors):
     repo_count=[]
     count=0
@@ -66,36 +69,34 @@ def getTheContributorsRepo(contributors):
 
 def getReceivedEvents(contributors):
     received_count=[]
+    issue_count=[]
     print("Prepare to print the recevied event amounts")
     for index in contributors:
         recevied = index.get_received_events()
         recevieds=len(list(recevied))
+        print(str(recevieds))
+        received_count.append(recevieds)
         push_event=list(index.get_received_events())
-        print(push_event)
-            # if push_event[count]['type']=='PushEvent':
-            #        push+=1
-        # count += 1
-        # print(recevieds)
-        if recevieds !="None":
-            received_count.append(str(recevieds))
+        push_event=str(push_event)
+        # print(push_event)
+        theIssue=0
+        if push_event!=[]:
+              push_event_str="".join(push_event)
+              print(push_event_str)
+              pattern=re.compile(r'IssuesEvent')
+              result=pattern.findall(push_event_str)
+              theIssue=len(result)
+              print(theIssue)
+              issue_count.append(str(theIssue))
 
-    return received_count
-
-
-def getCommitts(contributors):
-    commits=[]
-    print("Prepare to print the commits amount of each contributor")
-    for index in contributors:
-        commit = index.get_commits()
-        theCommits=list(commit)
-        print(theCommits)
-
-    return commits
+        elif push_event==[]:
+               print(push_event_str)
+               theIssue=0
+               print(theIssue)
+               issue_count.append(str(theIssue))
 
 
-
-
-
+    return received_count,issue_count
 
 
 def getStars(contributors):
@@ -119,15 +120,13 @@ def getStars(contributors):
 
 
 
-
-
 repo=start()
 (contributors,contributions) = getTheContributors(repo)
 # print the greatest contributors and contributions
 print("\nThe contributors who gives the most contributions is " +contributors[0].name+" and his/her contribution time is:"+contributions[0])
-repo_count = getTheContributorsRepo(contributors)
-# received_count = getReceivedEvents(contributors)
-starred_count=getStars(contributors)
+# repo_count = getTheContributorsRepo(contributors)
+received_count = getReceivedEvents(contributors)
+# starred_count=getStars(contributors)
 # to print each contributor's repository amount
 # count=0
 # while count<len(repo_count):
@@ -143,5 +142,3 @@ starred_count=getStars(contributors)
 #     result=int(starred_count[count])/int(repo_count[count])
 #     print("The result are "+str(result))
 #     count+=1
-
-commits=getCommitts(contributors)
