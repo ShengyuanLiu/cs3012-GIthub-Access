@@ -1,11 +1,11 @@
-
+import requests
 import json
 import re
 from github import Github
 import getpass
 import numpy as np
 import io
-
+import csv
 
 def start():
         access = False
@@ -231,6 +231,18 @@ with open('data.json', 'w')as f:
     f.write(json.dumps(listData))
 
 
+#change json file to csv
+
+file=csv.writer(open("data.csv","w",newline=''))
+file.writerow(["username","Issues_Event","Watch_Event","Total_Received","Work_quality","Repo_authority"])
+x=listData
+for x in x:
+    file.writerow([x["username"],
+                x["Issues Event"],
+                x["Watch Event"],
+                x["Total Received"],
+                x["Work quality"],
+                x["Repo authority"]])
 
 
 # to print each contributor's repository amount
