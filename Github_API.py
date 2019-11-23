@@ -69,7 +69,7 @@ def getTheContributorsRepo(contributors):
 def getReceivedIssueEvents(contributors):
     received_count=[]
     issue_count=[]
-    print("Prepare to print the recevied issue event amounts")
+    print("The received issue event amounts are collecting ...")
     for index in contributors:
         recevied = index.get_received_events()
         recevieds=len(list(recevied))
@@ -85,13 +85,13 @@ def getReceivedIssueEvents(contributors):
               pattern=re.compile(r'IssuesEvent')
               result=pattern.findall(push_event_str)
               theIssue=len(result)
-              print(theIssue)
+              # print(theIssue)
               issue_count.append(str(theIssue))
 
         elif push_event==[]:
                # print(push_event_str)
                theIssue=0
-               print(theIssue)
+               # print(theIssue)
                issue_count.append(str(theIssue))
 
 
@@ -100,7 +100,7 @@ def getReceivedIssueEvents(contributors):
 def getReceivedWatchEvents(contributors):
     received_count=[]
     watch_count=[]
-    print("Prepare to print the recevied watch event amounts")
+    print("The received watch event amounts are collecting ...")
     for index in contributors:
         recevied = index.get_received_events()
         recevieds=len(list(recevied))
@@ -116,13 +116,13 @@ def getReceivedWatchEvents(contributors):
               pattern=re.compile(r'WatchEvent')
               result=pattern.findall(push_event_str)
               theIssue=len(result)
-              print(theIssue)
+              # print(theIssue)
               watch_count.append(str(theIssue))
 
         elif push_event==[]:
                # print(push_event_str)
                theIssue=0
-               print(theIssue)
+               # print(theIssue)
                watch_count.append(str(theIssue))
 
 
@@ -192,26 +192,30 @@ theData=""
 listData=[]
 while count<len(contributors):
       name=contributors[count].name
-      print(name)
+      # print(name)
       issues_count=issue_count[count]
-      print(issues_count)
+      # print(issues_count)
       watchs_count=watch_count[count]
-      print(watchs_count)
+      # print(watchs_count)
       total_event=str(received_count[count])
-      print(total_event)
-      result1=int(issue_count[count])/int(received_count[count])
-      if int(received_count[count])==0:
-          result1=None
+      # print(total_event)
+
+      if int(received_count[count]) == 0:
+          result1=0
+      else:
+          result1=int(issue_count[count])/int(received_count[count])
+
 
       wq=str(result1)
-      print(wq)
-
-      result2 = int(watch_count[count]) / int(received_count[count])
+      # print(wq)
       if int(received_count[count]) == 0:
-          result2 = None
+          result2 =0
+      else:
+          result2 = int(watch_count[count]) / int(received_count[count])
+
 
       ra=str(result2)
-      print(ra)
+      # print(ra)
       theData={
           "username":name,
           "Issues Event":issues_count,
@@ -244,6 +248,8 @@ for x in x:
                 x["Work quality"],
                 x["Repo authority"]])
 
+
+print("The data.csv has been added")
 
 # to print each contributor's repository amount
 # count1=0

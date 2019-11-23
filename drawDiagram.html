@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Loading CSV Data with D3</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+<h1>Repostity's contributors and their work quality and repository authority</h1>
+<p>This table shows all contributors of the select repository and list them by the contribute the least to contribute the most order</p>
+<p>Order: The least contribution's contributor</p>
+<p>——————↓——————</p>
+<p>——————↓——————</p>
+<p>——————↓——————</p>
+<p>The most contribution's contributor</p>
+<p>Then show each contributor's work quality and repository authority within 90 days</p>
+<p>The work quality = contributor's get issue events / get total received events</p>
+<p>The repository authority = contributor's get Watch events / get total received events</p>
+<div id="table"></div>
+
+</body>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<!-- load the function file you need before you call it... -->
+<script type="text/javascript" src="tabulate.js"></script>
+
+<script type="text/javascript">
+    //Load in contents of CSV file, and do things to the data.
+    d3.csv("data.csv", function(error, myData) {
+        if (error) {
+            console.log("Had an error loading file.");
+        }
+        // We'll be using simpler data as values, not objects.
+        var myArray = [];
+        myData.forEach(function(d, i){
+            // now we add another data object value, a calculated value.
+            // here we are making strings into numbers using type coercion
+            d.Issues_Event = +d.Issues_Event;
+            d.Watch_Event = +d.Watch_Event;
+            d.Total_Received = +d.Total_Received;
+            d.Work_quality = +d.Work_quality;
+            d.Repo_authority = +d.Repo_authority;
+
+            // Add a new array with the values of each:
+            myArray.push([d.username, d.Issues_Event, d.Watch_Event, d.Total_Received,d.Work_quality,d.Repo_authority]);
+        });
+        console.log(myData);
+        console.log(myArray);
+        //sort data by difference
+        myArray.sort(function (a, b) {
+            return a[5]-b[5];
+        });
+        // You could also have made the new array with a map function!
+        //using colors and fonts from the UNICEF Style Guide
+        var table = d3.select("#table").append("table");
+        var header = table.append("thead").append("tr");
+        header
+                .selectAll("th")
+                .data(["username", "Issues_Event", "Watch_Event", "Total_Received", "Work_quality", "Repo_authority"])
+                .enter()
+                .append("th")
+                .text(function(d) { return d; });
+        var tablebody = table.append("tbody");
+        rows = tablebody
+                .selectAll("tr")
+                .data(myArray)
+                .enter()
+                .append("tr");
+        // We built the rows using the nested array - now each row has its own array.
+        cells = rows.selectAll("td")
+            // each row has data associated; we get it and enter it for the cells.
+                .data(function(d) {
+                    console.log(d);
+                    return d;
+                })
+                .enter()
+                .append("td")
+                .text(function(d) {
+                    return d;
+                });
+    });
+</script>
+
+</html>
