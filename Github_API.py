@@ -217,7 +217,7 @@ while count<len(contributors):
       ra=str(result2)
       # print(ra)
       theData={
-          "username":name,
+          "username":name+"["+str(count)+"]",
           "Issues Event":issues_count,
           "Watch Event":watchs_count,
           "Total Received":total_event,
