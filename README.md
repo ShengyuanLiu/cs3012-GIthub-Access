@@ -22,7 +22,8 @@ Interrogating the GitHub API to build visualization of data available that eluci
   
   2. the data stores in the data.json and data.csv
   
-  3. click the drawDiagram.html and open it in browser such as Chorme or firefox
+  3. click the drawDiagram.html and open it in browser by using the programming software (Remeber open it in the programming software such as:Visual Studio Code, PyCharm etc.If only click the html
+  in the file, it will not display the table and data) such as Chorme or firefox
   
  # End
  
